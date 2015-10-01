@@ -60,7 +60,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
           let url = NSURL(string: urlString) {
 
             if let browserHandler = getSelectedHandler(Handlers, ofHandlerType: HandlerTypeBrowser) as? BrowserHander {
-              return browserHandler.openURL(url)
+              // http://stackoverflow.com/questions/19356488/openurl-freezes-app-for-over-10-seconds
+              dispatch_async(dispatch_get_main_queue()) {
+                browserHandler.openURL(url)
+              }
+              return true
             } else {
               return false
             }
@@ -76,7 +80,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
           let mail = Mail(recipient: recipient, subject: subject, body: body)
 
           if let mailHandler = getSelectedHandler(Handlers, ofHandlerType: HandlerTypeMail) as? MailHandler {
-            return mailHandler.handleMail(mail)
+            dispatch_async(dispatch_get_main_queue()) {
+              mailHandler.handleMail(mail)
+            }
+            return true
           } else {
             return false
           }
@@ -85,7 +92,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Maps
         if pathComponents?.contains("maps") ?? false {
           if let mapsHandler = getSelectedHandler(Handlers, ofHandlerType: HandlerTypeMaps) as? MapsHandler {
-            return mapsHandler.handleMaps(query ?? [String:[String]]())
+            dispatch_async(dispatch_get_main_queue()) {
+              mapsHandler.handleMaps(query ?? [String:[String]]())
+            }
+            return true
           } else {
             return false
           }
