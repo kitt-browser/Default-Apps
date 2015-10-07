@@ -12,7 +12,7 @@ let HandlerTypeBrowser = "HandlerTypeBrowser"
 
 protocol BrowserHander
 {
-  func openURL(url: NSURL) -> Bool
+  func createURL(fromURL url: NSURL) -> NSURL?
 }
 
 extension BrowserHander
@@ -28,9 +28,9 @@ struct SafariHandler : BrowserHander, InstalledApplication
 {
   let displayName = "Safari"
 
-  func openURL(url: NSURL) -> Bool
+  func createURL(fromURL url: NSURL) -> NSURL?
   {
-    return UIApplication.sharedApplication().openURL(url)
+    return url
   }
 }
 
@@ -40,18 +40,11 @@ struct ChromeHandler : BrowserHander, SchemeBasedApplication
 
   let scheme = "googlechrome-x-callback"
 
-  func openURL(url: NSURL) -> Bool
+  func createURL(fromURL url: NSURL) -> NSURL?
   {
-    let set = NSCharacterSet.URLQueryAllowedCharacterSet().mutableCopy() as! NSMutableCharacterSet
-      set.removeCharactersInString("+?")
-    let urlString = url.absoluteString.stringByAddingPercentEncodingWithAllowedCharacters(set)!
-
-    let chromeURLString = "\(scheme)://x-callback-url/open/?&url=\(urlString)"
-    if let chromeURL = NSURL(string: chromeURLString) {
-      return UIApplication.sharedApplication().openURL(chromeURL)
-    } else {
-      return false
-    }
+    let urlString = url.absoluteString.stringByEncodingURLFormat() ?? ""
+    let chromeURLString = "\(scheme)://x-callback-url/open/?url=\(urlString)"
+    return NSURL(string: chromeURLString)
   }
 }
 
@@ -61,7 +54,7 @@ struct TwoSchemeBrowserHandler: BrowserHander, SchemeBasedApplication
   let scheme: String
   let secureScheme: String
 
-  func openURL(url: NSURL) -> Bool
+  func createURL(fromURL url: NSURL) -> NSURL?
   {
     let s: String
     if url.scheme == "https" {
@@ -72,10 +65,6 @@ struct TwoSchemeBrowserHandler: BrowserHander, SchemeBasedApplication
 
     let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false)
     components?.scheme = s
-    if let operaURL = components?.URL {
-      return UIApplication.sharedApplication().openURL(operaURL)
-    } else {
-      return false
-    }
+    return components?.URL
   }
 }

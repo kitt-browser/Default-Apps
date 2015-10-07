@@ -46,65 +46,77 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
   }
 
-  func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool
+  func application(application: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool
   {
-    if url.scheme == "defaultapps",
-      let host = url.host where host == "x-callback-url" {
-
-        let query = url.query?.dictionaryFromQueryComponents(false)
-        let pathComponents = url.pathComponents
-
-        // Browser
-        if pathComponents?.contains("open") ?? false,
-          let urlString = query?["url"]?.first?.stringByDecodingURLFormat(),
-          let url = NSURL(string: urlString) {
-
-            if let browserHandler = getSelectedHandler(Handlers, ofHandlerType: HandlerTypeBrowser) as? BrowserHander {
-              // http://stackoverflow.com/questions/19356488/openurl-freezes-app-for-over-10-seconds
-              dispatch_async(dispatch_get_main_queue()) {
-                browserHandler.openURL(url)
-              }
-              return true
-            } else {
-              return false
-            }
-        }
-
-        // Mail
-        if pathComponents?.contains("mail") ?? false {
-
-          let recipient = query?["to"]?.first ?? ""
-          let subject = query?["subject"]?.first ?? ""
-          let body = query?["body"]?.first ?? ""
-
-          let mail = Mail(recipient: recipient, subject: subject, body: body)
-
-          if let mailHandler = getSelectedHandler(Handlers, ofHandlerType: HandlerTypeMail) as? MailHandler {
-            dispatch_async(dispatch_get_main_queue()) {
-              mailHandler.handleMail(mail)
-            }
-            return true
-          } else {
-            return false
-          }
-        }
-
-        // Maps
-        if pathComponents?.contains("maps") ?? false {
-          if let mapsHandler = getSelectedHandler(Handlers, ofHandlerType: HandlerTypeMaps) as? MapsHandler {
-            dispatch_async(dispatch_get_main_queue()) {
-              mapsHandler.handleMaps(query ?? [String:[String]]())
-            }
-            return true
-          } else {
-            return false
-          }
-        }
-
-        return false
+    if let url = createURL(fromURL: url) {
+      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        application.openURL(url)
+      })
+      return true
     } else {
       return false
     }
   }
-}
 
+
+  func createURL(fromPathComponents pathComponents: [String], andQuery query: [String:[String]]) -> NSURL?
+  {
+    // Browser
+    if pathComponents.contains("open"),
+      let urlString = query["url"]?.first?.stringByDecodingURLFormat(),
+      let url = NSURL(string: urlString) {
+
+        if let browserHandler = getSelectedHandler(Handlers, ofHandlerType: HandlerTypeBrowser) as? BrowserHander {
+          return browserHandler.createURL(fromURL: url)
+        } else {
+          return nil
+        }
+    }
+
+    // Mail
+    if pathComponents.contains("mail") {
+
+      let recipient = query["to"]?.first ?? ""
+      let subject = query["subject"]?.first ?? ""
+      let body = query["body"]?.first ?? ""
+
+      let mail = Mail(recipient: recipient, subject: subject, body: body)
+
+      if let mailHandler = getSelectedHandler(Handlers, ofHandlerType: HandlerTypeMail) as? MailHandler {
+        return mailHandler.createURL(fromMail: mail)
+      } else {
+        return nil
+      }
+    }
+
+    // Maps
+    if pathComponents.contains("maps") {
+      if let mapsHandler = getSelectedHandler(Handlers, ofHandlerType: HandlerTypeMaps) as? MapsHandler {
+        return mapsHandler.createURL(fromMapsParams: query ?? [String:[String]]())
+      } else {
+        return nil
+      }
+    }
+
+    return nil
+  }
+
+  func createURL(fromURL url: NSURL) -> NSURL?
+  {
+    if url.scheme == "defaultapps", let host = url.host where host == "x-callback-url",
+      let query = url.query?.dictionaryFromQueryComponents(false),
+      let pathComponents = url.pathComponents,
+      let url = createURL(fromPathComponents: pathComponents, andQuery: query) {
+
+        if let callerScheme = query["callerScheme"]?.first {
+          let query = String.queryStringFromDictionary(["url": [url.absoluteString]], encodeValues: true)
+          let urlString = "\(callerScheme)://x-callback-url/open/?\(query)"
+          if let url = NSURL(string: urlString) {
+            return url
+          }
+        }
+        return url
+    }
+    return nil
+  }
+}

@@ -10,7 +10,7 @@ import Foundation
 
 private let set = { () -> NSCharacterSet in
   let set = NSCharacterSet.URLQueryAllowedCharacterSet().mutableCopy() as! NSMutableCharacterSet
-  set.removeCharactersInString("+?")
+  set.removeCharactersInString("=+?&:/.")
   return set
 }()
 
@@ -44,5 +44,41 @@ extension String
       }
     }
     return queryComponents;
+  }
+
+  static func queryStringFromDictionary(query: [String: [String]], encodeValues: Bool = false) -> String
+  {
+    return query.reduce("") { (query, e) -> String in
+
+      if let key = e.0.stringByEncodingURLFormat() {
+        let q = e.1.reduce("", combine: { (q, e) -> String in
+          let value: String
+          if encodeValues {
+            guard let encoded = e.stringByEncodingURLFormat() else {
+              return q
+            }
+            value = encoded
+          } else {
+            value = e
+          }
+
+          if q.isEmpty {
+            return "\(key)=\(value)"
+          } else {
+            return q + "&\(key)=\(value)"
+          }
+        })
+
+        if q.isEmpty {
+          return query
+        } else if query.isEmpty {
+          return q
+        } else {
+          return query  + "&\(q)"
+        }
+      }
+      
+      return query
+    }
   }
 }

@@ -111,15 +111,12 @@
 			children = (
 				699741A31BBAE4FB00A18B68 /* AppDelegate.swift */,
 				699741AA1BBAE4FB00A18B68 /* Assets.xcassets */,
-				699741D31BBBD88200A18B68 /* BrowserHandler.swift */,
-				699741D71BBBDEF000A18B68 /* Handler.swift */,
 				699741D51BBBDE0100A18B68 /* HandlerCell.swift */,
+				69B1497C1BC555CB0054206D /* Handlers */,
 				699741A51BBAE4FB00A18B68 /* HomeController.swift */,
 				699741AF1BBAE4FB00A18B68 /* Info.plist */,
 				699741AC1BBAE4FB00A18B68 /* LaunchScreen.storyboard */,
-				699742131BBC39D400A18B68 /* MailHandler.swift */,
 				699741A71BBAE4FB00A18B68 /* Main.storyboard */,
-				699742151BBD195D00A18B68 /* MapsHandler.swift */,
 				699742191BBD346800A18B68 /* String+Encoding.swift */,
 			);
 			path = "Default Apps";
@@ -141,6 +138,17 @@
 				699741C51BBAE4FB00A18B68 /* Info.plist */,
 			);
 			path = "Default AppsUITests";
+			sourceTree = "<group>";
+		};
+		69B1497C1BC555CB0054206D /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+				699741D71BBBDEF000A18B68 /* Handler.swift */,
+				699742131BBC39D400A18B68 /* MailHandler.swift */,
+				699742151BBD195D00A18B68 /* MapsHandler.swift */,
+				699741D31BBBD88200A18B68 /* BrowserHandler.swift */,
+			);
+			name = Handlers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -19,7 +19,7 @@ let HandlerTypeMail = "HandlerTypeMail"
 
 protocol MailHandler
 {
-  func handleMail(mail: Mail) -> Bool
+  func createURL(fromMail mail: Mail) -> NSURL?
 }
 
 extension MailHandler
@@ -33,15 +33,10 @@ struct iOSMailHandler: MailHandler, InstalledApplication
 {
   let displayName = "Mail"
 
-  func handleMail(mail: Mail) -> Bool
+  func createURL(fromMail mail: Mail) -> NSURL?
   {
     let urlString = "mailto:\(mail.recipient)?subject=\(mail.subject)&body=\(mail.body)!"
-
-    if let url = NSURL(string: urlString) {
-      return UIApplication.sharedApplication().openURL(url)
-    } else {
-      return true
-    }
+    return NSURL(string: urlString)
   }
 }
 
@@ -51,15 +46,10 @@ struct GoogleMailHandler: MailHandler, SchemeBasedApplication
 
   let scheme = "googlegmail"
 
-  func handleMail(mail: Mail) -> Bool
+  func createURL(fromMail mail: Mail) -> NSURL?
   {
     let urlString = "\(scheme):///co?to=\(mail.recipient)&subject=\(mail.subject)&body=\(mail.body)!"
-
-    if let url = NSURL(string: urlString) {
-      return UIApplication.sharedApplication().openURL(url)
-    } else {
-      return true
-    }
+    return NSURL(string: urlString)
   }
 }
 
@@ -69,14 +59,9 @@ struct OutlookHandler: MailHandler, SchemeBasedApplication
 
   let scheme = "ms-outlook"
 
-  func handleMail(mail: Mail) -> Bool
+  func createURL(fromMail mail: Mail) -> NSURL?
   {
     let urlString = "\(scheme):///co?to=\(mail.recipient)&subject=\(mail.subject)&body=\(mail.body)!"
-
-    if let url = NSURL(string: urlString) {
-      return UIApplication.sharedApplication().openURL(url)
-    } else {
-      return true
-    }
+    return NSURL(string: urlString)
   }
 }

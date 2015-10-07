@@ -12,7 +12,7 @@ let HandlerTypeMaps = "HandlerTypeMaps"
 
 protocol MapsHandler
 {
-  func handleMaps(params: [String: [String]]) -> Bool
+  func createURL(fromMapsParams params: [String: [String]]) -> NSURL?
 }
 
 extension MapsHandler
@@ -26,15 +26,10 @@ struct iOSMapsHandler: MapsHandler, InstalledApplication
 {
   let displayName = "Maps"
 
-  func handleMaps(params: [String: [String]]) -> Bool
+  func createURL(fromMapsParams params: [String: [String]]) -> NSURL?
   {
-    let urlString = "http://maps.apple.com/?\(queryString(params))"
-
-    if let url = NSURL(string: urlString) {
-      return UIApplication.sharedApplication().openURL(url)
-    } else {
-      return true
-    }
+    let urlString = "http://maps.apple.com/?\(String.queryStringFromDictionary(params))"
+    return NSURL(string: urlString)
   }
 }
 
@@ -44,20 +39,15 @@ struct GoogleMapsHandler: MapsHandler, SchemeBasedApplication
 
   let scheme = "comgooglemaps"
 
-  func handleMaps(var params: [String: [String]]) -> Bool
+  func createURL(var fromMapsParams params: [String: [String]]) -> NSURL?
   {
     if let ll = params["ll"] {
       params.removeValueForKey("ll")
       params["center"] = ll
     }
 
-    let urlString = "\(scheme):///?\(queryString(params))"
-
-    if let url = NSURL(string: urlString) {
-      return UIApplication.sharedApplication().openURL(url)
-    } else {
-      return true
-    }
+    let urlString = "\(scheme):///?\(String.queryStringFromDictionary(params))"
+    return NSURL(string: urlString)
   }
 }
 
@@ -66,19 +56,14 @@ struct YandexMapsHandler: MapsHandler, SchemeBasedApplication
   let displayName = "Yandex Maps"
   let scheme = "yandexmaps"
 
-  func handleMaps(var params: [String: [String]]) -> Bool
+  func createURL(var fromMapsParams params: [String: [String]]) -> NSURL?
   {
     if let ll = params["ll"]?.first {
       params["ll"] = [ll.componentsSeparatedByString(",").reverse().joinWithSeparator(",")]
     }
 
-    let urlString = "\(scheme)://maps.yandex.ru/?\(queryString(params))"
-
-    if let url = NSURL(string: urlString) {
-      return UIApplication.sharedApplication().openURL(url)
-    } else {
-      return true
-    }
+    let urlString = "\(scheme)://maps.yandex.ru/?\(String.queryStringFromDictionary(params))"
+    return NSURL(string: urlString)
   }
 }
 
@@ -103,28 +88,3 @@ struct GenericMapsHandler: MapsHandler, SchemeBasedApplication
 }
 */
 
-func queryString(query: [String: [String]]) -> String
-{
-  return query.reduce("") { (query, e) -> String in
-
-    if let key = e.0.stringByEncodingURLFormat() {
-      let q = e.1.reduce("", combine: { (q, e) -> String in
-        if q.isEmpty {
-          return "\(key)=\(e)"
-        } else {
-          return "&\(key)=\(e)"
-        }
-      })
-
-      if q.isEmpty {
-        return query
-      } else if query.isEmpty {
-        return q
-      } else {
-        return "&\(q)"
-      }
-    }
-
-    return query
-  }
-}
