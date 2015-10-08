@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		690956B31BC664DB006EBA45 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690956B21BC664DB006EBA45 /* RootViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		699741A41BBAE4FB00A18B68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 699741A31BBAE4FB00A18B68 /* AppDelegate.swift */; };
 		699741A61BBAE4FB00A18B68 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 699741A51BBAE4FB00A18B68 /* HomeController.swift */; };
 		699741A91BBAE4FB00A18B68 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 699741A71BBAE4FB00A18B68 /* Main.storyboard */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		690956B21BC664DB006EBA45 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		699741A01BBAE4FB00A18B68 /* Default Apps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Default Apps.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		699741A31BBAE4FB00A18B68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		699741A51BBAE4FB00A18B68 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				699741AF1BBAE4FB00A18B68 /* Info.plist */,
 				699741AC1BBAE4FB00A18B68 /* LaunchScreen.storyboard */,
 				699741A71BBAE4FB00A18B68 /* Main.storyboard */,
+				690956B21BC664DB006EBA45 /* RootViewController.swift */,
 				699742191BBD346800A18B68 /* String+Encoding.swift */,
 			);
 			path = "Default Apps";
@@ -284,6 +287,7 @@
 			files = (
 				699741A61BBAE4FB00A18B68 /* HomeController.swift in Sources */,
 				6997421A1BBD346800A18B68 /* String+Encoding.swift in Sources */,
+				690956B31BC664DB006EBA45 /* RootViewController.swift in Sources */,
 				699741A41BBAE4FB00A18B68 /* AppDelegate.swift in Sources */,
 				699741D61BBBDE0100A18B68 /* HandlerCell.swift in Sources */,
 				699741D81BBBDEF000A18B68 /* Handler.swift in Sources */,

@@ -39,6 +39,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationDidBecomeActive(application: UIApplication)
   {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
+    UIView.animateWithDuration(0.2) { () -> Void in
+      if let rootViewController = self.window?.rootViewController as? RootViewController {
+        rootViewController.launchScreen?.alpha = 0
+      }
+    }
   }
 
   func applicationWillTerminate(application: UIApplication)
@@ -49,6 +55,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(application: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool
   {
     if let url = createURL(fromURL: url) {
+
+      if let rootViewController = window?.rootViewController as? RootViewController {
+        rootViewController.launchScreen?.alpha = 1
+      }
+
       dispatch_async(dispatch_get_main_queue(), { () -> Void in
         application.openURL(url)
       })

@@ -1,10 +1,65 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="FTb-zt-jha">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="6zp-tv-BP5">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
+        <!--LaunchScreen-->
+        <scene sceneID="Rgf-Ce-cYm">
+            <objects>
+                <viewControllerPlaceholder storyboardName="LaunchScreen" referencedIdentifier="LaunchScreen" id="Xsp-VJ-tZf" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Zm-08-Ij7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="550" y="56"/>
+        </scene>
+        <!--Root View Controller-->
+        <scene sceneID="5EX-xk-IMq">
+            <objects>
+                <viewController id="6zp-tv-BP5" customClass="RootViewController" customModule="Default_Apps" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LAD-zt-bWR"/>
+                        <viewControllerLayoutGuide type="bottom" id="bj6-0z-Ff3"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0Mo-h9-VSN">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r0g-2m-GKl">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <connections>
+                                    <segue destination="FTb-zt-jha" kind="embed" id="GNB-f8-8JJ"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wJN-AT-dfr">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <connections>
+                                    <segue destination="Xsp-VJ-tZf" kind="embed" id="8yI-wa-FeV"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="r0g-2m-GKl" firstAttribute="leading" secondItem="0Mo-h9-VSN" secondAttribute="leading" id="4YH-nl-6V7"/>
+                            <constraint firstItem="r0g-2m-GKl" firstAttribute="trailing" secondItem="0Mo-h9-VSN" secondAttribute="trailing" id="5Sf-he-45c"/>
+                            <constraint firstItem="bj6-0z-Ff3" firstAttribute="top" secondItem="r0g-2m-GKl" secondAttribute="bottom" id="Bcw-fr-Wwq"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="wJN-AT-dfr" secondAttribute="bottom" id="d7L-Ul-wRf"/>
+                            <constraint firstItem="wJN-AT-dfr" firstAttribute="top" secondItem="0Mo-h9-VSN" secondAttribute="topMargin" id="ea0-Kj-deV"/>
+                            <constraint firstItem="wJN-AT-dfr" firstAttribute="leading" secondItem="0Mo-h9-VSN" secondAttribute="leading" id="kTt-JA-NX4"/>
+                            <constraint firstAttribute="trailing" secondItem="wJN-AT-dfr" secondAttribute="trailing" id="sgz-Ci-iBb"/>
+                            <constraint firstItem="r0g-2m-GKl" firstAttribute="top" secondItem="0Mo-h9-VSN" secondAttribute="topMargin" id="uVE-92-5fn"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="launchScreen" destination="wJN-AT-dfr" id="xnx-0a-TI8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bl9-JD-Q1X" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-126.5" y="597.5"/>
+        </scene>
         <!--Home Controller-->
         <scene sceneID="Jfj-3E-ao0">
             <objects>
