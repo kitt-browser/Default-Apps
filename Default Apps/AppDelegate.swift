@@ -12,10 +12,16 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
+  var delayAnimation: NSTimeInterval = 0
 
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
   {
     // Override point for customization after application launch.
+
+    if let rootViewController = window?.rootViewController as? RootViewController {
+      rootViewController.launchScreen?.alpha = 0
+    }
+
     return true
   }
 
@@ -40,11 +46,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 
-    UIView.animateWithDuration(0.2) { () -> Void in
+    UIView.animateWithDuration(0.4, delay: delayAnimation, options: UIViewAnimationOptions(), animations: { () -> Void in
       if let rootViewController = self.window?.rootViewController as? RootViewController {
         rootViewController.launchScreen?.alpha = 0
       }
-    }
+      }, completion: nil)
+    delayAnimation = 0
   }
 
   func applicationWillTerminate(application: UIApplication)
@@ -59,6 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       if let rootViewController = window?.rootViewController as? RootViewController {
         rootViewController.launchScreen?.alpha = 1
       }
+      delayAnimation = 2
 
       dispatch_async(dispatch_get_main_queue(), { () -> Void in
         application.openURL(url)
